@@ -34,16 +34,23 @@ public class Graph<T extends Comparable<T>> {
     for (T vertex : vertices) {
       // define the reflexive edge for that vertex
       Edge<T> reflexiveEdge = new Edge<>(vertex, vertex);
-      if (vertices.contains(reflexiveEdge)) {
-        return true;
+      if (!vertices.contains(reflexiveEdge)) {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 
   public boolean isSymmetric() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    for (Edge<T> edge : edges) {
+      // define symmetric edge
+      Edge<T> reverseEdge = new Edge<>(edge.getDestination(), edge.getSource());
+      if (!edges.contains(reverseEdge)) {
+        return false;
+      }
+    }
+    // we reached end of vertices so we have symmetry
+    return true;
   }
 
   public boolean isTransitive() {
