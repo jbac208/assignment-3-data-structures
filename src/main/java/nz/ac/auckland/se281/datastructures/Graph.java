@@ -1,5 +1,6 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,14 +23,17 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public Set<T> getRoots() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    Set<T> roots = new HashSet<>(vertices);
+    for (Edge<T> edge : edges) {
+      roots.remove(edge.getDestination());
+    }
+    return roots;
   }
 
   public boolean isReflexive() {
     for (T vertex : vertices) {
       // define the reflexive edge for that vertex
-      T reflexiveEdge = new Edge<>(vertex, vertex);
+      Edge<T> reflexiveEdge = new Edge<>(vertex, vertex);
       if (vertices.contains(reflexiveEdge)) {
         return true;
       }
