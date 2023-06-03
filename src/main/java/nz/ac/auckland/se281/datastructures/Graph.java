@@ -48,10 +48,8 @@ public class Graph<T extends Comparable<T>> {
     // Check for roots in equivalence classes
     Set<Integer> equivalenceClasses = new HashSet<>();
     for (T vertex : vertices) {
-      System.out.println(setToIntSet(getEquivalenceClass(vertex)));
       equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
     }
-    System.out.println("hi");
     roots.add(Collections.min(equivalenceClasses));
 
     return roots;
@@ -136,13 +134,15 @@ public class Graph<T extends Comparable<T>> {
     int prevSize = equivalenceClassSet.size();
     do {
       prevSize = equivalenceClassSet.size();
+      Set<T> tempSet = new HashSet<>(equivalenceClassSet);
       for (T v : equivalenceClassSet) { // where v is vertex in eq class set
         for (Edge<T> edge : edges) {
           if (edge.getSource().equals(v)) {
-            equivalenceClassSet.add(edge.getDestination());
+            tempSet.add(edge.getDestination());
           }
         }
       }
+      equivalenceClassSet = tempSet;
     } while ((prevSize != equivalenceClassSet.size()));
 
     return equivalenceClassSet;
