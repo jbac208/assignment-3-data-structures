@@ -1,5 +1,7 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.Objects;
+
 /**
  * An edge in a graph that connects two verticies.
  *
@@ -42,5 +44,10 @@ public class Edge<T> {
     } else {
       return false;
     }
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(source);
   }
 }

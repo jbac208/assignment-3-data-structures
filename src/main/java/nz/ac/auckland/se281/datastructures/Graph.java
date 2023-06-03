@@ -23,32 +23,51 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public Set<T> getRoots() {
-    Set<T> roots = new HashSet<>(vertices);
-    for (Edge<T> edge : edges) {
-      // remove all vertices that are a destination to an edge
-      roots.remove(edge.getDestination());
+    Set<T> roots = new HashSet<>();
+
+    // Check for roots with in-degree 0 and out-degree > 0
+    for (T vertex : vertices) {
+      boolean hasIncomingEdges = false;
+      boolean hasOutgoingEdges = false;
+
+      for (Edge<T> edge : edges) {
+        if (edge.getDestination().equals(vertex)) {
+          hasIncomingEdges = true;
+        }
+        if (edge.getSource().equals(vertex)) {
+          hasOutgoingEdges = true;
+        }
+      }
+
+      if (!hasIncomingEdges && hasOutgoingEdges) {
+        roots.add(vertex);
+      }
     }
+
+    // Check for roots in equivalence classes
+    Set<T> equivalenceClasses = new HashSet<>();
+    for (T vertex : vertices) {
+      equivalenceClasses.add(getEquivalenceClass(vertex).iterator().next());
+    }
+
+    roots.addAll(equivalenceClasses);
+
     return roots;
   }
 
   public boolean isReflexive() {
-    int compCount = 0;
     for (T vertex : vertices) {
       // define the reflexive edge for that vertex
       Edge<T> reflexiveEdge = new Edge<>(vertex, vertex);
 
+      // test this
       for (Edge<T> edge : edges) {
-        if (reflexiveEdge.equals(edge)) {
-          // can only be one potential reflexive edge per vertex
-          compCount++;
+        if (!edge.equals(reflexiveEdge)) {
+          return false;
         }
       }
     }
-    // if every vertices has a reflexive edge, then return true
-    if (compCount == vertices.size()) {
-      return true;
-    }
-    return false;
+    return true;
   }
 
   public boolean isSymmetric() {
