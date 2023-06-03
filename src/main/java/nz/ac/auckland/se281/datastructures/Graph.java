@@ -46,11 +46,12 @@ public class Graph<T extends Comparable<T>> {
     }
 
     // Check for roots in equivalence classes
-    Set<Integer> equivalenceClasses = new HashSet<>();
-    for (T vertex : vertices) {
-      equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
-    }
-    roots.add(Collections.min(equivalenceClasses));
+    // Set<Integer> equivalenceClasses = new HashSet<>();
+
+    // for (T vertex : vertices) {
+    //   equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
+    // }
+    // roots.add(Collections.min(equivalenceClasses));
 
     return roots;
   }
