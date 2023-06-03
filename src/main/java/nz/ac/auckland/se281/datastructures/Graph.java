@@ -60,11 +60,8 @@ public class Graph<T extends Comparable<T>> {
       // define the reflexive edge for that vertex
       Edge<T> reflexiveEdge = new Edge<>(vertex, vertex);
 
-      // test this
-      for (Edge<T> edge : edges) {
-        if (!edge.equals(reflexiveEdge)) {
-          return false;
-        }
+      if (!edges.contains(reflexiveEdge)) {
+        return false;
       }
     }
     return true;
