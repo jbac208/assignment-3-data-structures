@@ -84,8 +84,14 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public Set<T> getEquivalenceClass(T vertex) {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    Set<T> equivalenceClassSet = new HashSet<>();
+    for (Edge<T> edge : edges) {
+      if (edge.getSource() == vertex) {
+        // if edge source is the given vertex, add to equivalence class
+        equivalenceClassSet.add(edge.getDestination());
+      }
+    }
+    return equivalenceClassSet;
   }
 
   public List<T> iterativeBreadthFirstSearch() {
