@@ -117,6 +117,15 @@ public class Graph<T extends Comparable<T>> {
         equivalenceClassSet.add(edge.getDestination());
       }
     }
+
+    for (T v : equivalenceClassSet) { // where v is vertex in eq class set
+      for (Edge<T> edge : edges) {
+        if (edge.getSource().equals(v)) {
+          equivalenceClassSet.add(edge.getDestination());
+        }
+      }
+    }
+
     return equivalenceClassSet;
   }
 
