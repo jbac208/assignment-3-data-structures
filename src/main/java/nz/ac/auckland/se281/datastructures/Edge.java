@@ -9,7 +9,7 @@ import java.util.Objects;
  *
  * @param <T> The type of each vertex.
  */
-public class Edge<T> {
+public class Edge<T extends Comparable<T>> {
 
   // declare variables
   private T source;

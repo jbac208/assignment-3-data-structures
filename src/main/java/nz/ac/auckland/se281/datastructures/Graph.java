@@ -1,5 +1,6 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,12 +46,13 @@ public class Graph<T extends Comparable<T>> {
     }
 
     // Check for roots in equivalence classes
-    // Set<Integer> equivalenceClasses = new HashSet<>();
-    // for (T vertex : vertices) {
-    //   equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
-    // }
-    // System.out.println("hi");
-    // roots.add(Collections.min(equivalenceClasses));
+    Set<Integer> equivalenceClasses = new HashSet<>();
+    for (T vertex : vertices) {
+      System.out.println(setToIntSet(getEquivalenceClass(vertex)));
+      equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
+    }
+    System.out.println("hi");
+    roots.add(Collections.min(equivalenceClasses));
 
     return roots;
   }
