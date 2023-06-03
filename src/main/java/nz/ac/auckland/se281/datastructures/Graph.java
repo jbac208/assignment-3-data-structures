@@ -22,8 +22,8 @@ public class Graph<T extends Comparable<T>> {
     this.edges = edges;
   }
 
-  public Set<T> getRoots() {
-    Set<T> roots = new HashSet<>();
+  public Set<Integer> getRoots() {
+    Set<Integer> roots = new HashSet<>();
 
     // Check for roots with in-degree 0 and out-degree > 0
     for (T vertex : vertices) {
@@ -40,19 +40,32 @@ public class Graph<T extends Comparable<T>> {
       }
 
       if (!hasIncomingEdges && hasOutgoingEdges) {
-        roots.add(vertex);
+        roots.add(Integer.parseInt((String) vertex));
       }
     }
 
     // Check for roots in equivalence classes
-    Set<T> equivalenceClasses = new HashSet<>();
-    for (T vertex : vertices) {
-      equivalenceClasses.add(getEquivalenceClass(vertex).iterator().next());
-    }
-
-    roots.addAll(equivalenceClasses);
+    // Set<Integer> equivalenceClasses = new HashSet<>();
+    // for (T vertex : vertices) {
+    //   equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
+    // }
+    // System.out.println("hi");
+    // roots.add(Collections.min(equivalenceClasses));
 
     return roots;
+  }
+
+  private Set<Integer> setToIntSet(Set<T> set) {
+    Set<String> stringSet = new HashSet<>();
+    for (T element : set) {
+      stringSet.add((String) element);
+    }
+
+    Set<Integer> intSet = new HashSet<>();
+    for (String element : stringSet) {
+      intSet.add(Integer.parseInt(element));
+    }
+    return intSet;
   }
 
   public boolean isReflexive() {
@@ -119,7 +132,7 @@ public class Graph<T extends Comparable<T>> {
     }
 
     int prevSize = equivalenceClassSet.size();
-    while (true) {
+    do {
       prevSize = equivalenceClassSet.size();
       for (T v : equivalenceClassSet) { // where v is vertex in eq class set
         for (Edge<T> edge : edges) {
@@ -128,10 +141,7 @@ public class Graph<T extends Comparable<T>> {
           }
         }
       }
-      if (prevSize == equivalenceClassSet.size()) {
-        break;
-      }
-    }
+    } while ((prevSize != equivalenceClassSet.size()));
 
     return equivalenceClassSet;
   }
