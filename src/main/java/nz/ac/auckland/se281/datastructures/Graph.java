@@ -25,6 +25,7 @@ public class Graph<T extends Comparable<T>> {
   public Set<T> getRoots() {
     Set<T> roots = new HashSet<>(vertices);
     for (Edge<T> edge : edges) {
+      // remove all vertices that are a destination to an edge
       roots.remove(edge.getDestination());
     }
     return roots;
@@ -34,9 +35,17 @@ public class Graph<T extends Comparable<T>> {
     for (T vertex : vertices) {
       // define the reflexive edge for that vertex
       Edge<T> reflexiveEdge = new Edge<>(vertex, vertex);
-      if (!vertices.contains(reflexiveEdge)) {
-        return false;
+
+      // test this
+      for (Edge<T> edge : edges) {
+        if (!edge.equals(reflexiveEdge)) {
+          return false;
+        }
       }
+
+      // if (!edges.contains(reflexiveEdge)) {
+      //   return false;
+      // }
     }
     return true;
   }
