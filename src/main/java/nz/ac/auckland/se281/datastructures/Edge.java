@@ -26,21 +26,21 @@ public class Edge<T> {
     return destination;
   }
 
-  // @Override
-  // public boolean equals(Object obj) {
-  //   if (!(obj instanceof Edge)) {
-  //     return false;
-  //   }
+  @Override
+  public boolean equals(Object obj) {
+    if (!(obj instanceof Edge)) {
+      return false;
+    }
 
-  //   Edge<T> otherEdge = (Edge<T>) obj;
+    Edge<?> otherEdge = (Edge<?>) obj;
 
-  //   // Compare the source and destination vertices for equality
-  //   if (source != null
-  //       && source.equals(otherEdge.getSource())
-  //       && destination.equals(otherEdge.getDestination())) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+    // Compare the source and destination vertices for equality
+    if (source != null
+        && source.equals(otherEdge.getSource())
+        && destination.equals(otherEdge.getDestination())) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

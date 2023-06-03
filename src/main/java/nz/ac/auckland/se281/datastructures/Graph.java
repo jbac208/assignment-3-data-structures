@@ -32,22 +32,23 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isReflexive() {
+    int compCount = 0;
     for (T vertex : vertices) {
       // define the reflexive edge for that vertex
       Edge<T> reflexiveEdge = new Edge<>(vertex, vertex);
 
-      // test this
       for (Edge<T> edge : edges) {
-        if (!edge.equals(reflexiveEdge)) {
-          return false;
+        if (reflexiveEdge.equals(edge)) {
+          // can only be one potential reflexive edge per vertex
+          compCount++;
         }
       }
-
-      // if (!edges.contains(reflexiveEdge)) {
-      //   return false;
-      // }
     }
-    return true;
+    // if every vertices has a reflexive edge, then return true
+    if (compCount == vertices.size()) {
+      return true;
+    }
+    return false;
   }
 
   public boolean isSymmetric() {
