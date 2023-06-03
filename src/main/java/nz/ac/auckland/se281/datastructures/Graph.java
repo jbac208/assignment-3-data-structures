@@ -54,13 +54,28 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isTransitive() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // check transitivity
+    for (Edge<T> edge1 : edges) {
+      for (Edge<T> edge2 : edges) {
+        if (edge1.getDestination().equals(edge2.getSource())) {
+          Edge<T> transitiveEdge = new Edge<>(edge1.getSource(), edge2.getDestination());
+          if (!edges.contains(transitiveEdge)) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   public boolean isAntiSymmetric() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // check isAntiSymmetric
+    for (Edge<T> edge : edges) {
+      Edge<T> reverseEdge = new Edge<>(edge.getDestination(), edge.getSource());
+      if (edges.contains(reverseEdge) && !edge.getSource().equals(edge.getDestination()))
+        return false;
+    }
+    return true;
   }
 
   public boolean isEquivalence() {
