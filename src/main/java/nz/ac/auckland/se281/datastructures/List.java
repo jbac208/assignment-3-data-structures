@@ -10,11 +10,11 @@ public interface List<T> {
 
   public void prepend(T item);
 
-  public T fetch(int pos);
+  public T fetch(int pos) throws InvalidPositionException;
 
-  public void insert(int pos, T data);
+  public void insert(int pos, T data) throws InvalidPositionException;
 
-  public void remove(int pos);
+  public void remove(int pos) throws InvalidPositionException;
 
   public int size();
 }

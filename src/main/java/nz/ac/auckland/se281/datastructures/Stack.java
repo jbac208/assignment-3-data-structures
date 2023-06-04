@@ -6,9 +6,9 @@ public interface Stack<T> {
 
   public boolean isEmpty();
 
-  public T peek();
+  public T peek() throws InvalidPositionException;
 
   public void push(T element);
 
-  public T pop();
+  public T pop() throws InvalidPositionException;
 }

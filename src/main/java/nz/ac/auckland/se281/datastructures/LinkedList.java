@@ -53,14 +53,14 @@ public class LinkedList<T> implements List<T> {
    * @param pos: an integer, which is the position
    * @return the value at the position pos
    */
-  public T fetch(int pos) {
+  public T fetch(int pos) throws InvalidPositionException {
     if (pos < 0 || pos >= size()) {
-        throw new IndexOutOfBoundsException("Invalid position");
+      throw new InvalidPositionException("Invalid position");
     }
 
     Node<T> current = head;
     for (int i = 0; i < pos; i++) {
-        current = current.getNext();
+      current = current.getNext();
     }
     return current.getValue();
   }
@@ -71,20 +71,20 @@ public class LinkedList<T> implements List<T> {
    * @param pos: an integer, which is the position
    * @return the value at the position pos
    */
-  public void insert(int pos, T data) {
+  public void insert(int pos, T data) throws InvalidPositionException {
     if (pos < 0 || pos > size()) {
-        throw new IndexOutOfBoundsException("Invalid position");
+      throw new InvalidPositionException("Invalid position");
     }
 
     if (pos == 0) {
-        prepend(data);
-        return;
+      prepend(data);
+      return;
     }
 
     Node<T> newNode = new Node<T>(data);
     Node<T> current = head;
     for (int i = 0; i < pos - 1; i++) {
-        current = current.getNext();
+      current = current.getNext();
     }
     newNode.setNext(current.getNext());
     current.setNext(newNode);
@@ -96,19 +96,19 @@ public class LinkedList<T> implements List<T> {
    * @param pos: an integer, which is the position
    * @return void
    */
-  public void remove(int pos) {
+  public void remove(int pos) throws InvalidPositionException {
     if (pos < 0 || pos >= size()) {
-        throw new IndexOutOfBoundsException("Invalid position");
+      throw new InvalidPositionException("Invalid position");
     }
 
     if (pos == 0) {
-        head = head.getNext();
-        return;
+      head = head.getNext();
+      return;
     }
 
     Node<T> current = head;
     for (int i = 0; i < pos - 1; i++) {
-        current = current.getNext();
+      current = current.getNext();
     }
     current.setNext(current.getNext().getNext());
   }
@@ -123,8 +123,8 @@ public class LinkedList<T> implements List<T> {
     int count = 0;
     Node<T> current = head;
     while (current != null) {
-        count++;
-        current = current.getNext();
+      ++count;
+      current = current.getNext();
     }
     return count;
   }
