@@ -170,10 +170,10 @@ public class Graph<T extends Comparable<T>> {
     for (Edge<T> edge : edges) {
       T nextNode = edge.getDestination();
       T prevNode = edge.getSource();
-      if (nextNode.equals(node) && !prevNode.equals(node)) {
+      if (edge.getSource().equals(node) && !nextNode.equals(node) && nextNode != null) {
         // next node exists and is not self
         adjacentNodes.add(nextNode);
-      } else if (prevNode.equals(node) && !nextNode.equals(node)) {
+      } else if (edge.getDestination().equals(node) && !prevNode.equals(node) && prevNode != null) {
         // prev node exists and is not self
         adjacentNodes.add(prevNode);
       }
@@ -222,7 +222,7 @@ public class Graph<T extends Comparable<T>> {
       T current = stack.pop();
       // if unknown node, visit it
       if (!visited.contains(current)) {
-        visited.addAll(visited);
+        visited.add(current);
         System.out.println(current); // printing check _ this is visited node
 
         // add adjacent (neighbour) nodes to stack

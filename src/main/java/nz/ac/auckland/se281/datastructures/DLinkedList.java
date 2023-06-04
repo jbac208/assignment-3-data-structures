@@ -44,7 +44,11 @@ public class DLinkedList<T> {
   public void deleteHead() {
     DNode<T> temp = head;
     this.head = temp.getNext();
-    this.head.setPrev(null);
+    try {
+      this.head.setPrev(null);
+    } catch (NullPointerException e) {
+
+    }
   }
 
   public void deleteTail() {
