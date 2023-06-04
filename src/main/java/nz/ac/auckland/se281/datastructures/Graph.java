@@ -129,27 +129,28 @@ public class Graph<T extends Comparable<T>> {
 
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> equivalenceClassSet = new HashSet<>();
-    for (Edge<T> edge : edges) {
-      if (edge.getSource().equals(vertex)) {
-        // if edge source is the given vertex, add to equivalence class
-        equivalenceClassSet.add(edge.getDestination());
-      }
-    }
-
-    int prevSize = equivalenceClassSet.size();
-    do {
-      prevSize = equivalenceClassSet.size();
-      Set<T> tempSet = new HashSet<>(equivalenceClassSet);
-      for (T v : equivalenceClassSet) { // where v is vertex in eq class set
-        for (Edge<T> edge : edges) {
-          if (edge.getSource().equals(v)) {
-            tempSet.add(edge.getDestination());
-          }
+    if (isEquivalence()) {
+      for (Edge<T> edge : edges) {
+        if (edge.getSource().equals(vertex)) {
+          // if edge source is the given vertex, add to equivalence class
+          equivalenceClassSet.add(edge.getDestination());
         }
       }
-      equivalenceClassSet = tempSet;
-    } while ((prevSize != equivalenceClassSet.size()));
 
+      int prevSize = equivalenceClassSet.size();
+      do {
+        prevSize = equivalenceClassSet.size();
+        Set<T> tempSet = new HashSet<>(equivalenceClassSet);
+        for (T v : equivalenceClassSet) { // where v is vertex in eq class set
+          for (Edge<T> edge : edges) {
+            if (edge.getSource().equals(v)) {
+              tempSet.add(edge.getDestination());
+            }
+          }
+        }
+        equivalenceClassSet = tempSet;
+      } while ((prevSize != equivalenceClassSet.size()));
+    }
     return equivalenceClassSet;
   }
 
