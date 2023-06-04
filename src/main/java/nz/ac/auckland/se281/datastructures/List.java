@@ -17,4 +17,8 @@ public interface List<T> {
   public void remove(int pos) throws InvalidPositionException;
 
   public int size();
+
+  public Node<T> getHead();
+
+  public Node<T> locateNode(int pos) throws InvalidPositionException;
 }

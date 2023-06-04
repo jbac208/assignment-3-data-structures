@@ -7,13 +7,34 @@ package nz.ac.auckland.se281.datastructures;
  * @author Partha Roop
  */
 public class LinkedList<T> implements List<T> {
-  private Node<T> head;
+  protected Node<T> head;
 
   public LinkedList() {
     head = null;
   }
 
+  public Node<T> getHead() {
+    return this.head;
+  }
+
   // Key methods of the List interface
+
+  public Node<T> locateNode(int pos) throws InvalidPositionException {
+    if (pos < 0 || pos > size() - 1) {
+      throw new InvalidPositionException("Invalid Position");
+    }
+    Node<T> current = head;
+    int i = 0;
+    while (current != null) {
+      if (i < pos) {
+        current = current.getNext();
+        ++i;
+      } else {
+        return current;
+      }
+    }
+    return null;
+  }
 
   /**
    * This method adds a node with specified data as the start node of the list
@@ -23,8 +44,7 @@ public class LinkedList<T> implements List<T> {
    */
   public void prepend(T data) {
     // Note -- works even if list is empty
-    Node<T> n = new Node<T>(data);
-    n.setNext(head);
+    Node<T> n = new Node<T>(data, head);
     head = n;
   }
 
@@ -35,16 +55,21 @@ public class LinkedList<T> implements List<T> {
    * @return void
    */
   public void append(T data) {
-    if (head == null) {
-      prepend(data);
-    }
+    Node<T> current;
+    current = head;
 
-    Node<T> newNode = new Node<T>(data);
-    Node<T> current = head;
-    while (current.getNext() != null) {
-      current = current.getNext();
+    if (current == null) {
+      Node<T> n = new Node<T>(data);
+      head = n;
+    } else {
+      try {
+        current = locateNode(size() - 1);
+        Node<T> n = new Node<T>(data, null);
+        current.setNext(n);
+      } catch (InvalidPositionException e) {
+        System.out.println("Locating at invalid position");
+      }
     }
-    current.setNext(newNode);
   }
 
   /**
@@ -54,14 +79,10 @@ public class LinkedList<T> implements List<T> {
    * @return the value at the position pos
    */
   public T fetch(int pos) throws InvalidPositionException {
-    if (pos < 0 || pos >= size()) {
+    if (pos < 0 || pos >= size() - 1) {
       throw new InvalidPositionException("Invalid position");
     }
-
-    Node<T> current = head;
-    for (int i = 0; i < pos; i++) {
-      current = current.getNext();
-    }
+    Node<T> current = locateNode(pos);
     return current.getValue();
   }
 
@@ -74,20 +95,16 @@ public class LinkedList<T> implements List<T> {
   public void insert(int pos, T data) throws InvalidPositionException {
     if (pos < 0 || pos > size()) {
       throw new InvalidPositionException("Invalid position");
-    }
-
-    if (pos == 0) {
+    } else if (pos == 0) {
       prepend(data);
-      return;
+    } else if (pos == size()) {
+      append(data);
+    } else {
+      Node<T> current = locateNode(pos - 1);
+      Node<T> after = current.getNext();
+      Node<T> newN = new Node<T>(data, after);
+      current.setNext(newN);
     }
-
-    Node<T> newNode = new Node<T>(data);
-    Node<T> current = head;
-    for (int i = 0; i < pos - 1; i++) {
-      current = current.getNext();
-    }
-    newNode.setNext(current.getNext());
-    current.setNext(newNode);
   }
 
   /**
@@ -97,20 +114,16 @@ public class LinkedList<T> implements List<T> {
    * @return void
    */
   public void remove(int pos) throws InvalidPositionException {
-    if (pos < 0 || pos >= size()) {
+    if (pos < 0 || pos >= size() - 1) {
       throw new InvalidPositionException("Invalid position");
-    }
-
-    if (pos == 0) {
+    } else if (pos == 0) {
       head = head.getNext();
-      return;
+    } else {
+      Node<T> current = locateNode(pos - 1);
+      Node<T> after = current.getNext();
+      Node<T> newAfter = after.getNext();
+      current.setNext(newAfter);
     }
-
-    Node<T> current = head;
-    for (int i = 0; i < pos - 1; i++) {
-      current = current.getNext();
-    }
-    current.setNext(current.getNext().getNext());
   }
 
   /**
