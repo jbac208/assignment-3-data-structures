@@ -60,7 +60,7 @@ public class Graph<T extends Comparable<T>> {
     // convert int set to T set
     tRoots.clear();
     for (Integer root : nRoots) {
-      tRoots.add((T) root);
+      tRoots.add((T) Integer.toString(root));
     }
 
     return tRoots;
@@ -177,10 +177,10 @@ public class Graph<T extends Comparable<T>> {
     for (Edge<T> edge : edges) {
       T nextNode = edge.getDestination();
       T prevNode = edge.getSource();
-      if (edge.getSource().equals(node) && !nextNode.equals(node) && nextNode != null) {
+      if (prevNode.equals(node) && !nextNode.equals(node) && nextNode != null) {
         // next node exists and is not self
         adjacentNodes.add(nextNode);
-      } else if (edge.getDestination().equals(node) && !prevNode.equals(node) && prevNode != null) {
+      } else if (nextNode.equals(node) && !prevNode.equals(node) && prevNode != null) {
         // prev node exists and is not self
         adjacentNodes.add(prevNode);
       }
@@ -219,29 +219,31 @@ public class Graph<T extends Comparable<T>> {
 
   public List<T> iterativeDepthFirstSearch() {
     Stack<T> stack = new DLinkedListStack<>();
-    Stack<T> convertedList = verticesToDLinkedList();
-    T vTemp = convertedList.peek();
-    stack.push(vTemp);
+    List<T> visitConverted = new ArrayList<>();
 
-    // traverse
-    Set<T> visited = new HashSet<>();
-    while (!stack.isEmpty()) {
-      T current = stack.pop();
-      // if unknown node, visit it
-      if (!visited.contains(current)) {
-        visited.add(current);
-        System.out.println(current); // printing check _ this is visited node
+    // start at root and search at every root
+    Set<T> rootSet = getRoots();
+    for (T root : rootSet) {
+      stack.push(root);
 
-        // add adjacent (neighbour) nodes to stack
-        for (T neighbour : setOfAdjacentNodes(current)) {
-          stack.push(neighbour);
+      // traverse
+      Set<T> visited = new HashSet<>();
+      while (!stack.isEmpty()) {
+        T current = stack.pop();
+        // if unknown node, visit it
+        if (!visited.contains(current)) {
+          visited.add(current);
+
+          // add adjacent (neighbour) nodes to stack
+          for (T neighbour : setOfAdjacentNodes(current)) {
+            stack.push(neighbour);
+          }
         }
       }
+      // convert visited Set to ordered List
+      visitConverted.addAll(visited);
     }
 
-    // convert visited Set to ordered List
-    List<T> visitConverted = new ArrayList<>();
-    visitConverted.addAll(visited);
     bubbleSort(visitConverted);
 
     return visitConverted;
