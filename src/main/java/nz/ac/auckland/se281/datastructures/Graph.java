@@ -1,5 +1,6 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -156,12 +157,52 @@ public class Graph<T extends Comparable<T>> {
   }
 
   private Stack<T> verticesToDLinkedList() {
-    // convert the vertices set into dnodes in a dlinkedlist
+    // convert the vertices set into dnodes in a dlinkedlist (NOT ORDERED)
     Stack<T> convertedList = new DLinkedListStack<>();
     for (T vertex : vertices) {
       convertedList.push(vertex);
     }
     return convertedList;
+  }
+
+  private Set<T> setOfAdjacentNodes(T node) {
+    Set<T> adjacentNodes = new HashSet<>();
+    for (Edge<T> edge : edges) {
+      T nextNode = edge.getDestination();
+      T prevNode = edge.getSource();
+      if (nextNode.equals(node) && !prevNode.equals(node)) {
+        // next node exists and is not self
+        adjacentNodes.add(nextNode);
+      } else if (prevNode.equals(node) && !nextNode.equals(node)) {
+        // prev node exists and is not self
+        adjacentNodes.add(prevNode);
+      }
+    }
+    return adjacentNodes;
+  }
+
+  public void bubbleSort(List<T> list) {
+    int n = list.size();
+    boolean swapped;
+
+    for (int i = 0; i < n - 1; i++) {
+      swapped = false;
+
+      for (int j = 0; j < n - i - 1; j++) {
+        if (list.get(j).compareTo(list.get(j + 1)) > 0) {
+          // Swap elements
+          T temp = list.get(j);
+          list.set(j, list.get(j + 1));
+          list.set(j + 1, temp);
+          swapped = true;
+        }
+      }
+
+      // If no two elements were swapped, the list is already sorted
+      if (!swapped) {
+        break;
+      }
+    }
   }
 
   public List<T> iterativeBreadthFirstSearch() {
@@ -170,12 +211,33 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> iterativeDepthFirstSearch() {
-    Stack<DNode<T>> stack = new DLinkedListStack<>();
+    Stack<T> stack = new DLinkedListStack<>();
     Stack<T> convertedList = verticesToDLinkedList();
     T vTemp = convertedList.peek();
     stack.push(vTemp);
-    System.out.println(convertedList.peek());
-    throw new UnsupportedOperationException();
+
+    // traverse
+    Set<T> visited = new HashSet<>();
+    while (!stack.isEmpty()) {
+      T current = stack.pop();
+      // if unknown node, visit it
+      if (!visited.contains(current)) {
+        visited.addAll(visited);
+        System.out.println(current); // printing check _ this is visited node
+
+        // add adjacent (neighbour) nodes to stack
+        for (T neighbour : setOfAdjacentNodes(current)) {
+          stack.push(neighbour);
+        }
+      }
+    }
+
+    // convert visited Set to ordered List
+    List<T> visitConverted = new ArrayList<>();
+    visitConverted.addAll(visited);
+    bubbleSort(visitConverted);
+
+    return visitConverted;
   }
 
   public List<T> recursiveBreadthFirstSearch() {

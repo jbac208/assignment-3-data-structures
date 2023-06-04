@@ -11,6 +11,7 @@ public class DLinkedList<T> {
   }
 
   public void insertAtHead(T data) {
+    // push
     DNode<T> nodeToBeInserted = new DNode<>(data);
     if (head == null) {
       tail = nodeToBeInserted;
@@ -74,6 +75,7 @@ public class DLinkedList<T> {
   }
 
   public DNode<T> getHead() {
+    // peek
     return head;
   }
 
