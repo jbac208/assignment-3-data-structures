@@ -25,6 +25,7 @@ public class Graph<T extends Comparable<T>> {
 
   public Set<Integer> getRoots() {
     Set<Integer> roots = new HashSet<>();
+    Set<T> rootRemovedVertices = new HashSet<>(vertices);
 
     // Check for roots with in-degree 0 and out-degree > 0
     for (T vertex : vertices) {
@@ -41,18 +42,20 @@ public class Graph<T extends Comparable<T>> {
       }
 
       if (!hasIncomingEdges && hasOutgoingEdges) {
+        rootRemovedVertices.remove(vertex);
         roots.add(Integer.parseInt((String) vertex));
       }
     }
 
     // Check for roots in equivalence classes
-    // Set<Integer> equivalenceClasses = new HashSet<>();
-
-    // for (T vertex : vertices) {
-    //   equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
-    // }
-    // roots.add(Collections.min(equivalenceClasses));
-
+    Graph<T> rootRemovedGraph = new Graph<>(rootRemovedVertices, edges);
+    if (rootRemovedGraph.isEquivalence()) {
+      Set<Integer> equivalenceClasses = new HashSet<>();
+      for (T vertex : vertices) {
+        equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
+      }
+      roots.add(Collections.min(equivalenceClasses));
+    }
     return roots;
   }
 
@@ -82,6 +85,7 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isSymmetric() {
+    // symmetric -> all edges are bidirectional
     for (Edge<T> edge : edges) {
       // define symmetric edge
       Edge<T> reverseEdge = new Edge<>(edge.getDestination(), edge.getSource());
