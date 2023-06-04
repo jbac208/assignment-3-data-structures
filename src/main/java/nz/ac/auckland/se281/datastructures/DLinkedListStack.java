@@ -3,7 +3,6 @@ package nz.ac.auckland.se281.datastructures;
 public class DLinkedListStack<T> implements Stack<T> {
 
   protected DLinkedList<T> stackData;
-  protected int top = -1;
 
   public DLinkedListStack() {
     this.stackData = new DLinkedList<>();
