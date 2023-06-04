@@ -4,23 +4,20 @@ public class Node<T> {
   private T val;
   private Node<T> next;
 
-  // constructor
-
+  // constructors
   public Node() {}
 
   public Node(T v) {
     val = v;
     this.next = null;
-    ;
   }
 
-  public Node(T v, Node<T> next) {
-    val = v;
+  public Node(T val, Node<T> next) {
+    this.val = val;
     this.next = next;
   }
 
   // getters and setters
-
   public void setNext(Node<T> n) {
     next = n;
   }
