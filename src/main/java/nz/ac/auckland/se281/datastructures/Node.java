@@ -1,8 +1,12 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Node<T> {
   private T val;
   private Node<T> next;
+  private List<Node<T>> neighbours = new ArrayList<Node<T>>();
 
   // constructor
 

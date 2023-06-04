@@ -35,7 +35,16 @@ public class LinkedList<T> implements List<T> {
    * @return void
    */
   public void append(T data) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (head == null) {
+      prepend(data);
+    }
+
+    Node<T> newNode = new Node<T>(data);
+    Node<T> current = head;
+    while (current.getNext() != null) {
+      current = current.getNext();
+    }
+    current.setNext(newNode);
   }
 
   /**
@@ -45,9 +54,15 @@ public class LinkedList<T> implements List<T> {
    * @return the value at the position pos
    */
   public T fetch(int pos) {
-    T val = head.getValue();
+    if (pos < 0 || pos >= size()) {
+        throw new IndexOutOfBoundsException("Invalid position");
+    }
 
-    throw new UnsupportedOperationException("Not supported yet.");
+    Node<T> current = head;
+    for (int i = 0; i < pos; i++) {
+        current = current.getNext();
+    }
+    return current.getValue();
   }
 
   /**
@@ -57,7 +72,22 @@ public class LinkedList<T> implements List<T> {
    * @return the value at the position pos
    */
   public void insert(int pos, T data) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (pos < 0 || pos > size()) {
+        throw new IndexOutOfBoundsException("Invalid position");
+    }
+
+    if (pos == 0) {
+        prepend(data);
+        return;
+    }
+
+    Node<T> newNode = new Node<T>(data);
+    Node<T> current = head;
+    for (int i = 0; i < pos - 1; i++) {
+        current = current.getNext();
+    }
+    newNode.setNext(current.getNext());
+    current.setNext(newNode);
   }
 
   /**
@@ -67,7 +97,20 @@ public class LinkedList<T> implements List<T> {
    * @return void
    */
   public void remove(int pos) {
-    throw new UnsupportedOperationException("Not supported yet.");
+    if (pos < 0 || pos >= size()) {
+        throw new IndexOutOfBoundsException("Invalid position");
+    }
+
+    if (pos == 0) {
+        head = head.getNext();
+        return;
+    }
+
+    Node<T> current = head;
+    for (int i = 0; i < pos - 1; i++) {
+        current = current.getNext();
+    }
+    current.setNext(current.getNext().getNext());
   }
 
   /**
@@ -77,6 +120,12 @@ public class LinkedList<T> implements List<T> {
    * @return the size of the list
    */
   public int size() {
-    throw new UnsupportedOperationException("Not supported yet.");
+    int count = 0;
+    Node<T> current = head;
+    while (current != null) {
+        count++;
+        current = current.getNext();
+    }
+    return count;
   }
 }
