@@ -1,6 +1,5 @@
 package nz.ac.auckland.se281.datastructures;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +25,6 @@ public class Graph<T extends Comparable<T>> {
   public Set<Integer> getRoots() {
     Set<Integer> nRoots = new HashSet<>();
     Set<T> tRoots = new HashSet<>();
-    Set<T> rootRemovedVertices = new HashSet<>(vertices);
 
     // Check for roots with in-degree 0 and out-degree > 0
     for (T vertex : vertices) {
@@ -44,46 +42,39 @@ public class Graph<T extends Comparable<T>> {
 
       if (!hasIncomingEdges && hasOutgoingEdges) {
         tRoots.add(vertex);
-        rootRemovedVertices.remove(vertex);
         nRoots.add(Integer.parseInt((String) vertex));
       }
     }
 
     // Check for roots in equivalence classes
-    Set<Set<T>> setOfEquivClasses = new HashSet<>();
-    for (T vertex : rootRemovedVertices) {
-      setOfEquivClasses.add(getReachableVertices(vertex));
-    }
-
-    for (Set<T> equivClass : setOfEquivClasses) {
-      if (tRoots.size() > 0) {
-        for (T root : tRoots) {
-          Set<T> rootReachables = new HashSet<>(getReachableVertices(root));
-          // remove root from set
-          rootReachables.remove(root);
-          if (!rootReachables.equals(equivClass)) {
-            nRoots.add(Collections.min(setToIntSet(equivClass)));
-          }
-        }
-      } else {
-        nRoots.add(Collections.min(setToIntSet(equivClass)));
+    Set<T> equivVertices = new HashSet<>();
+    for (T vertex : vertices) {
+      if (getEquivalenceClass(vertex).size() > 0 && !equivVertices.contains(vertex)) {
+        tRoots.add(vertex);
+        nRoots.add(Integer.parseInt((String) vertex));
+        equivVertices = getEquivalenceClass(vertex);
       }
-
-      // Set<Integer> intEquivClass = new HashSet<>(setToIntSet(equivClass));
-      // for (Integer root : roots) {
-      //   if (!intEquivClass.contains(root)) {
-      //     roots.add(Collections.min(intEquivClass));
-      //   }
-      // }
     }
 
-    // Graph<T> rootRemovedGraph = new Graph<>(rootRemovedVertices, edges);
-    // if (rootRemovedGraph.isEquivalence()) {
-    //   Set<Integer> equivalenceClasses = new HashSet<>();
-    //   for (T vertex : vertices) {
-    //     equivalenceClasses.addAll(setToIntSet(getEquivalenceClass(vertex)));
+    // Set<Set<T>> setOfEquivClasses = new HashSet<>();
+    // for (T vertex : rootRemovedVertices) {
+    //   setOfEquivClasses.add(getReachableVertices(vertex));
+    // }
+
+    // for (Set<T> equivClass : setOfEquivClasses) {
+    //   if (tRoots.size() > 0) {
+    //     for (T root : tRoots) {
+    //       Set<T> rootReachables = new HashSet<>(getReachableVertices(root));
+    //       // remove root from set
+    //       rootReachables.remove(root);
+    //       if (!rootReachables.equals(equivClass)) {
+    //         nRoots.add(Collections.min(setToIntSet(equivClass)));
+    //       }
+    //     }
+    //   } else {
+    //     nRoots.add(Collections.min(setToIntSet(equivClass)));
     //   }
-    //   roots.add(Collections.min(equivalenceClasses));
+
     // }
     return nRoots;
   }
@@ -163,37 +154,53 @@ public class Graph<T extends Comparable<T>> {
 
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> equivalenceClassSet = new HashSet<>();
+    T nextV = null;
+    Set<T> visited = new HashSet<>();
+
     if (isEquivalence()) {
-      equivalenceClassSet = getReachableVertices(vertex);
+      equivalenceClassSet.add(vertex);
+      visited.add(vertex);
+
+      while (!visited.contains(nextV)) {
+        for (Edge<T> edge : edges) {
+          if (vertex.equals(edge.getSource())) {
+            nextV = edge.getDestination();
+            if (!visited.contains(nextV)) {
+              visited.add(nextV);
+              equivalenceClassSet.add(nextV);
+            }
+          }
+        }
+      }
     }
     return equivalenceClassSet;
   }
 
-  private Set<T> getReachableVertices(T vertex) {
-    // can use this method to find all vertices
-    Set<T> reachableVerticesSet = new HashSet<>();
-    for (Edge<T> edge : edges) {
-      if (edge.getSource().equals(vertex)) {
-        // if edge source is the given vertex, add to equivalence class
-        reachableVerticesSet.add(edge.getDestination());
-      }
-    }
+  // private Set<T> getReachableVertices(T vertex) {
+  //   // can use this method to find all vertices
+  //   Set<T> reachableVerticesSet = new HashSet<>();
+  //   for (Edge<T> edge : edges) {
+  //     if (edge.getSource().equals(vertex)) {
+  //       // if edge source is the given vertex, add to equivalence class
+  //       reachableVerticesSet.add(edge.getDestination());
+  //     }
+  //   }
 
-    int prevSize = reachableVerticesSet.size();
-    do {
-      prevSize = reachableVerticesSet.size();
-      Set<T> tempSet = new HashSet<>(reachableVerticesSet);
-      for (T v : reachableVerticesSet) { // where v is vertex in eq class set
-        for (Edge<T> edge : edges) {
-          if (edge.getSource().equals(v)) {
-            tempSet.add(edge.getDestination());
-          }
-        }
-      }
-      reachableVerticesSet = tempSet;
-    } while ((prevSize != reachableVerticesSet.size()));
-    return reachableVerticesSet;
-  }
+  //   int prevSize = reachableVerticesSet.size();
+  //   do {
+  //     prevSize = reachableVerticesSet.size();
+  //     Set<T> tempSet = new HashSet<>(reachableVerticesSet);
+  //     for (T v : reachableVerticesSet) { // where v is vertex in eq class set
+  //       for (Edge<T> edge : edges) {
+  //         if (edge.getSource().equals(v)) {
+  //           tempSet.add(edge.getDestination());
+  //         }
+  //       }
+  //     }
+  //     reachableVerticesSet = tempSet;
+  //   } while ((prevSize != reachableVerticesSet.size()));
+  //   return reachableVerticesSet;
+  // }
 
   public List<T> iterativeBreadthFirstSearch() {
     // TODO: Task 2.
