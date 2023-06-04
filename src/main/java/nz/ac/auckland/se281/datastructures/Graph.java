@@ -55,27 +55,6 @@ public class Graph<T extends Comparable<T>> {
         equivVertices = getEquivalenceClass(vertex);
       }
     }
-
-    // Set<Set<T>> setOfEquivClasses = new HashSet<>();
-    // for (T vertex : rootRemovedVertices) {
-    //   setOfEquivClasses.add(getReachableVertices(vertex));
-    // }
-
-    // for (Set<T> equivClass : setOfEquivClasses) {
-    //   if (tRoots.size() > 0) {
-    //     for (T root : tRoots) {
-    //       Set<T> rootReachables = new HashSet<>(getReachableVertices(root));
-    //       // remove root from set
-    //       rootReachables.remove(root);
-    //       if (!rootReachables.equals(equivClass)) {
-    //         nRoots.add(Collections.min(setToIntSet(equivClass)));
-    //       }
-    //     }
-    //   } else {
-    //     nRoots.add(Collections.min(setToIntSet(equivClass)));
-    //   }
-
-    // }
     return nRoots;
   }
 
@@ -175,32 +154,6 @@ public class Graph<T extends Comparable<T>> {
     }
     return equivalenceClassSet;
   }
-
-  // private Set<T> getReachableVertices(T vertex) {
-  //   // can use this method to find all vertices
-  //   Set<T> reachableVerticesSet = new HashSet<>();
-  //   for (Edge<T> edge : edges) {
-  //     if (edge.getSource().equals(vertex)) {
-  //       // if edge source is the given vertex, add to equivalence class
-  //       reachableVerticesSet.add(edge.getDestination());
-  //     }
-  //   }
-
-  //   int prevSize = reachableVerticesSet.size();
-  //   do {
-  //     prevSize = reachableVerticesSet.size();
-  //     Set<T> tempSet = new HashSet<>(reachableVerticesSet);
-  //     for (T v : reachableVerticesSet) { // where v is vertex in eq class set
-  //       for (Edge<T> edge : edges) {
-  //         if (edge.getSource().equals(v)) {
-  //           tempSet.add(edge.getDestination());
-  //         }
-  //       }
-  //     }
-  //     reachableVerticesSet = tempSet;
-  //   } while ((prevSize != reachableVerticesSet.size()));
-  //   return reachableVerticesSet;
-  // }
 
   public List<T> iterativeBreadthFirstSearch() {
     // TODO: Task 2.
