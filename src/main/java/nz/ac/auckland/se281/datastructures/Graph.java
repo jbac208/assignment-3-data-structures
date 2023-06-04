@@ -23,7 +23,7 @@ public class Graph<T extends Comparable<T>> {
     this.edges = edges;
   }
 
-  public Set<Integer> getRoots() {
+  public Set<T> getRoots() {
     Set<Integer> nRoots = new HashSet<>();
     Set<T> tRoots = new HashSet<>();
 
@@ -56,7 +56,14 @@ public class Graph<T extends Comparable<T>> {
         equivVertices = getEquivalenceClass(vertex);
       }
     }
-    return nRoots;
+
+    // convert int set to T set
+    tRoots.clear();
+    for (Integer root : nRoots) {
+      tRoots.add((T) root);
+    }
+
+    return tRoots;
   }
 
   private Set<Integer> setToIntSet(Set<T> set) {
