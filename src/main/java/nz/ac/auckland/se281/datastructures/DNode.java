@@ -45,7 +45,7 @@ public class DNode<T> {
     return next;
   }
 
-  public T data() {
+  public T getData() {
     return data;
   }
 }
