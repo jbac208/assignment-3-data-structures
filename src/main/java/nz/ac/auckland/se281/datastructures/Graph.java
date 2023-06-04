@@ -1,7 +1,6 @@
 package nz.ac.auckland.se281.datastructures;
 
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -156,13 +155,26 @@ public class Graph<T extends Comparable<T>> {
     return equivalenceClassSet;
   }
 
+  private Stack<T> verticesToDLinkedList() {
+    // convert the vertices set into dnodes in a dlinkedlist
+    Stack<T> convertedList = new DLinkedListStack<>();
+    for (T vertex : vertices) {
+      convertedList.push(vertex);
+    }
+    return convertedList;
+  }
+
   public List<T> iterativeBreadthFirstSearch() {
     // TODO: Task 2.
     throw new UnsupportedOperationException();
   }
 
   public List<T> iterativeDepthFirstSearch() {
-    // TODO: Task 2.
+    Stack<DNode<T>> stack = new DLinkedListStack<>();
+    Stack<T> convertedList = verticesToDLinkedList();
+    T vTemp = convertedList.peek();
+    stack.push(vTemp);
+    System.out.println(convertedList.peek());
     throw new UnsupportedOperationException();
   }
 
