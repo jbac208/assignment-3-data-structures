@@ -1,9 +1,11 @@
 package nz.ac.auckland.se281.datastructures;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * A graph that is composed of a set of verticies and edges.
@@ -24,7 +26,7 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public Set<T> getRoots() {
-    Set<Integer> nRoots = new HashSet<>();
+    List<T> rootsList = new ArrayList<>();
     Set<T> tRoots = new HashSet<>();
 
     // Check for roots with in-degree 0 and out-degree > 0
@@ -43,7 +45,7 @@ public class Graph<T extends Comparable<T>> {
 
       if (!hasIncomingEdges && hasOutgoingEdges) {
         tRoots.add(vertex);
-        nRoots.add(Integer.parseInt((String) vertex));
+        rootsList.add(vertex);
       }
     }
 
@@ -52,31 +54,29 @@ public class Graph<T extends Comparable<T>> {
     for (T vertex : vertices) {
       if (getEquivalenceClass(vertex).size() > 0 && !equivVertices.contains(vertex)) {
         tRoots.add(vertex);
-        nRoots.add(Integer.parseInt((String) vertex));
+        rootsList.add(vertex);
         equivVertices = getEquivalenceClass(vertex);
       }
     }
 
-    // convert int set to T set
-    tRoots.clear();
-    for (Integer root : nRoots) {
-      tRoots.add((T) Integer.toString(root));
-    }
-
-    return tRoots;
+    // Sort nRoots in ascending order
+    return orderHashSet(tRoots);
   }
 
-  private Set<Integer> setToIntSet(Set<T> set) {
-    Set<String> stringSet = new HashSet<>();
-    for (T element : set) {
-      stringSet.add((String) element);
-    }
+  public Set<T> orderHashSet(Set<T> set) {
+    // Create a custom comparator to compare string-wrapped numbers as numbers
+    Comparator<T> comparator =
+        (s1, s2) -> {
+          Integer n1 = Integer.parseInt((String) s1);
+          Integer n2 = Integer.parseInt((String) s2);
+          return n1.compareTo(n2);
+        };
 
-    Set<Integer> intSet = new HashSet<>();
-    for (String element : stringSet) {
-      intSet.add(Integer.parseInt(element));
-    }
-    return intSet;
+    // Create a TreeSet with the custom comparator to maintain the numeric order
+    Set<T> orderedSet = new TreeSet<>(comparator);
+    orderedSet.addAll(set);
+
+    return orderedSet;
   }
 
   public boolean isReflexive() {
@@ -163,31 +163,6 @@ public class Graph<T extends Comparable<T>> {
     return equivalenceClassSet;
   }
 
-  private Stack<T> verticesToDLinkedList() {
-    // convert the vertices set into dnodes in a dlinkedlist (NOT ORDERED)
-    Stack<T> convertedList = new DLinkedListStack<>();
-    for (T vertex : vertices) {
-      convertedList.push(vertex);
-    }
-    return convertedList;
-  }
-
-  // private Set<T> setOfAdjacentNodes(T node) {
-  //   Set<T> adjacentNodes = new HashSet<>();
-  //   for (Edge<T> edge : edges) {
-  //     T nextNode = edge.getDestination();
-  //     T prevNode = edge.getSource();
-  //     if (prevNode.equals(node) && !nextNode.equals(node) && nextNode != null) {
-  //       // next node exists and is not self
-  //       adjacentNodes.add(nextNode);
-  //     } else if (nextNode.equals(node) && !prevNode.equals(node) && prevNode != null) {
-  //       // prev node exists and is not self
-  //       adjacentNodes.add(prevNode);
-  //     }
-  //   }
-  //   return adjacentNodes;
-  // }
-
   private Set<T> setOfDestinations(T node) {
     Set<T> destinationNodes = new HashSet<>();
     for (Edge<T> edge : edges) {
@@ -201,7 +176,7 @@ public class Graph<T extends Comparable<T>> {
     return destinationNodes;
   }
 
-  public List<T> bubbleSort(List<T> list) {
+  private List<T> bubbleSort(List<T> list) {
     int n = list.size();
     boolean swapped;
 
@@ -298,12 +273,79 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> recursiveBreadthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    Queue<T> queue = new DLinkedListQueue<>();
+    List<T> visited = new ArrayList<>();
+
+    Set<T> rootSet = getRoots();
+    for (T root : rootSet) {
+      if (!visited.contains(root)) {
+        queue.enqueue(root);
+        visited.add(root);
+        recursiveBFSHelper(queue, visited);
+      }
+    }
+
+    return visited;
+  }
+
+  private void recursiveBFSHelper(Queue<T> queue, List<T> visited) {
+    if (queue.isEmpty()) {
+      return;
+    }
+
+    T current = queue.dqueue();
+
+    for (T neighbor : setOfDestinations(current)) {
+      if (!visited.contains(neighbor)) {
+        queue.enqueue(neighbor);
+        visited.add(neighbor);
+      }
+    }
+
+    recursiveBFSHelper(queue, visited);
+  }
+
+  private void dfsUtil(T node, Set<T> visited, List<T> totalVisited) {
+    visited.add(node);
+    totalVisited.add(node);
+
+    Set<T> destinations = setOfDestinations(node);
+    for (T dest : destinations) {
+      if (!visited.contains(dest)) {
+        dfsUtil(dest, visited, totalVisited);
+      }
+    }
   }
 
   public List<T> recursiveDepthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    Stack<T> stack = new DLinkedListStack<>();
+    List<T> totalVisited = new ArrayList<>();
+
+    Set<T> rootSet = getRoots();
+    for (T root : rootSet) {
+      recursiveDFSHelper(root, stack, totalVisited);
+    }
+
+    return totalVisited;
+  }
+
+  private void recursiveDFSHelper(T node, Stack<T> stack, List<T> totalVisited) {
+    stack.push(node);
+
+    while (!stack.isEmpty()) {
+      T current = stack.pop();
+      if (!totalVisited.contains(current)) {
+        totalVisited.add(current);
+        List<T> destinations = new ArrayList<>();
+        for (T destination : setOfDestinations(current)) {
+          if (!totalVisited.contains(destination)) {
+            destinations.add(destination);
+          }
+        }
+        for (int i = destinations.size() - 1; i >= 0; i--) {
+          stack.push(destinations.get(i));
+        }
+      }
+    }
   }
 }
