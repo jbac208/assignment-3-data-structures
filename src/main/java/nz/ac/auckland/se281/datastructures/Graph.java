@@ -228,44 +228,28 @@ public class Graph<T extends Comparable<T>> {
 
   public List<T> iterativeBreadthFirstSearch() {
     Queue<T> queue = new DLinkedListQueue<>();
-    List<T> totalVisited = new ArrayList<>();
+    List<T> visited = new ArrayList<>();
 
     // start at root and search at every root
     Set<T> rootSet = getRoots();
     for (T root : rootSet) {
-      queue.enqueue(root);
+      if (!visited.contains(root)) {
+        queue.enqueue(root);
+        visited.add(root);
+      }
 
-      // traverse
-      List<T> visited = new ArrayList<>();
       while (!queue.isEmpty()) {
-        T current = queue.front();
-        // if unknown node, visit it
-        if (!visited.contains(current)) {
-          visited.add(current);
-
-          // get neighbors
-          List<T> destinations = new ArrayList<>();
-          while (destinations.size() <= 0) {
-            for (T destination : setOfDestinations(current)) {
-              if (!visited.contains(destination)) {
-                destinations.add(destination);
-              }
-            }
-            if (destinations.size() <= 0) {
-              // go back until there is a neighbour
-              queue.dqueue();
-              // break if stack empty
-              if (queue.isEmpty()) {
-                break;
-              }
-              current = queue.front();
-            }
+        T current = queue.dqueue();
+        // get neighbors
+        for (T neighbor : setOfDestinations(current)) {
+          if (!visited.contains(neighbor)) {
+            queue.enqueue(neighbor);
+            visited.add(neighbor);
           }
         }
       }
-      totalVisited.addAll(visited);
     }
-    return totalVisited;
+    return visited;
   }
 
   public List<T> iterativeDepthFirstSearch() {

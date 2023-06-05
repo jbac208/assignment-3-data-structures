@@ -24,9 +24,14 @@ public class DLinkedList<T> {
 
   public void insertAtTail(T data) {
     DNode<T> nodeToBeInserted = new DNode<>(data);
-    tail.setNext(nodeToBeInserted);
-    nodeToBeInserted.setPrev(tail);
-    this.tail = nodeToBeInserted;
+    if (tail == null) { // List is empty
+      head = nodeToBeInserted;
+      tail = nodeToBeInserted;
+    } else {
+      tail.setNext(nodeToBeInserted);
+      nodeToBeInserted.setPrev(tail);
+      tail = nodeToBeInserted;
+    }
   }
 
   public void insertAt(int position, T data) {
@@ -42,19 +47,27 @@ public class DLinkedList<T> {
   }
 
   public void deleteHead() {
-    DNode<T> temp = head;
-    this.head = temp.getNext();
-    try {
-      this.head.setPrev(null);
-    } catch (NullPointerException e) {
-
+    if (head != null) {
+      DNode<T> temp = head;
+      head = temp.getNext();
+      if (head != null) {
+        head.setPrev(null);
+      } else {
+        tail = null; // List is now empty
+      }
     }
   }
 
   public void deleteTail() {
-    DNode<T> previous = tail.getPrev();
-    previous.setNext(null);
-    this.tail = previous;
+    if (tail != null) {
+      DNode<T> temp = tail;
+      tail = temp.getPrev();
+      if (tail != null) {
+        tail.setNext(null);
+      } else {
+        head = null; // List is now empty
+      }
+    }
   }
 
   public void deleteAt(int position) {
