@@ -202,10 +202,10 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> iterativeBreadthFirstSearch() {
-    Queue<T> queue = new DLinkedListQueue<>();
+    DLinkedListQueue<T> queue = new DLinkedListQueue<>();
     List<T> visited = new ArrayList<>();
 
-    // start at root and search at every root
+    // Start at root and search from every root
     Set<T> rootSet = getRoots();
     for (T root : rootSet) {
       if (!visited.contains(root)) {
@@ -215,15 +215,24 @@ public class Graph<T extends Comparable<T>> {
 
       while (!queue.isEmpty()) {
         T current = queue.dqueue();
-        // get neighbors
-        for (T neighbor : setOfDestinations(current)) {
-          if (!visited.contains(neighbor)) {
-            queue.enqueue(neighbor);
-            visited.add(neighbor);
+
+        // Get neighbors and add them to the end of the queue
+        List<T> neighbours = new ArrayList<>();
+        for (T neighbour : setOfDestinations(current)) {
+          if (!visited.contains(neighbour)) {
+            neighbours.add(neighbour);
           }
+        }
+
+        // queue and add to visited in ascending numerical order
+        List<T> sortedNeighbours = new ArrayList<>(bubbleSort(neighbours));
+        for (T node : sortedNeighbours) {
+          queue.enqueue(node);
+          visited.add(node);
         }
       }
     }
+
     return visited;
   }
 
@@ -295,7 +304,18 @@ public class Graph<T extends Comparable<T>> {
 
     T current = queue.dqueue();
 
-    for (T neighbor : setOfDestinations(current)) {
+    List<T> neighbors = new ArrayList<>(setOfDestinations(current));
+    neighbors.sort(
+        new Comparator<T>() {
+          @Override
+          public int compare(T node1, T node2) {
+            int value1 = Integer.parseInt(node1.toString());
+            int value2 = Integer.parseInt(node2.toString());
+            return Integer.compare(value1, value2);
+          }
+        });
+
+    for (T neighbor : neighbors) {
       if (!visited.contains(neighbor)) {
         queue.enqueue(neighbor);
         visited.add(neighbor);
@@ -303,18 +323,6 @@ public class Graph<T extends Comparable<T>> {
     }
 
     recursiveBFSHelper(queue, visited);
-  }
-
-  private void dfsUtil(T node, Set<T> visited, List<T> totalVisited) {
-    visited.add(node);
-    totalVisited.add(node);
-
-    Set<T> destinations = setOfDestinations(node);
-    for (T dest : destinations) {
-      if (!visited.contains(dest)) {
-        dfsUtil(dest, visited, totalVisited);
-      }
-    }
   }
 
   public List<T> recursiveDepthFirstSearch() {
@@ -336,12 +344,18 @@ public class Graph<T extends Comparable<T>> {
       T current = stack.pop();
       if (!totalVisited.contains(current)) {
         totalVisited.add(current);
-        List<T> destinations = new ArrayList<>();
-        for (T destination : setOfDestinations(current)) {
-          if (!totalVisited.contains(destination)) {
-            destinations.add(destination);
-          }
-        }
+
+        List<T> destinations = new ArrayList<>(setOfDestinations(current));
+        destinations.sort(
+            new Comparator<T>() {
+              @Override
+              public int compare(T node1, T node2) {
+                int value1 = Integer.parseInt(node1.toString());
+                int value2 = Integer.parseInt(node2.toString());
+                return Integer.compare(value1, value2);
+              }
+            });
+
         for (int i = destinations.size() - 1; i >= 0; i--) {
           stack.push(destinations.get(i));
         }
