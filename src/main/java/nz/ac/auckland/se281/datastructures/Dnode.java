@@ -53,7 +53,7 @@ public class Dnode<T> {
   // Setters
 
   /**
-   * Sets the previous node.
+   * Sets the specified node as the previous node.
    *
    * @param prev The previous node.
    */
@@ -62,7 +62,7 @@ public class Dnode<T> {
   }
 
   /**
-   * Sets the next node.
+   * Sets the specified node as the next node.
    *
    * @param next The next node.
    */
@@ -73,7 +73,7 @@ public class Dnode<T> {
   // Getters
 
   /**
-   * Returns the previous node.
+   * Returns the node previous to this node.
    *
    * @return The previous node.
    */
@@ -82,7 +82,7 @@ public class Dnode<T> {
   }
 
   /**
-   * Returns the next node.
+   * Returns the node next to this node.
    *
    * @return The next node.
    */

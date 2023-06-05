@@ -23,7 +23,7 @@ public class Graph<T extends Comparable<T>> {
   /**
    * Constructs a graph with the given vertices and edges.
    *
-   * @param vertices The set of vertices in the graph.
+   * @param verticies The set of vertices in the graph.
    * @param edges The set of edges in the graph.
    */
   public Graph(Set<T> verticies, Set<Edge<T>> edges) {

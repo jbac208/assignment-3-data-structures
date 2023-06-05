@@ -1,7 +1,7 @@
 package nz.ac.auckland.se281.datastructures;
 
 /**
- * A queue is a collection of elements with FIFO policy
+ * A queue is a collection of elements with FIFO policy.
  *
  * @param <T> The type of elements stored in the queue.
  */
