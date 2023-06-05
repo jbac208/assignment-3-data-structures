@@ -185,14 +185,17 @@ public class Graph<T extends Comparable<T>> {
    * @return The set of vertices in the equivalence class.
    */
   public Set<T> getEquivalenceClass(T vertex) {
+    // initial variables
     Set<T> equivalenceClassSet = new HashSet<>();
     T nextV = null;
     Set<T> visited = new HashSet<>();
 
+    // only get equiv class if graph is in equivalence relation first
     if (isEquivalence()) {
       equivalenceClassSet.add(vertex);
       visited.add(vertex);
 
+      // iterate over, and add vertices in equiv class
       while (!visited.contains(nextV)) {
         for (Edge<T> edge : edges) {
           if (vertex.equals(edge.getSource())) {
@@ -354,9 +357,11 @@ public class Graph<T extends Comparable<T>> {
    * @return The list of visited vertices in the order they were visited.
    */
   public List<T> recursiveBreadthFirstSearch() {
+    // initial variables
     Queue<T> queue = new DlinkedListQueue<>();
     List<T> visited = new ArrayList<>();
 
+    // perform search from every root
     Set<T> rootSet = getRoots();
     for (T root : rootSet) {
       if (!visited.contains(root)) {
@@ -376,14 +381,16 @@ public class Graph<T extends Comparable<T>> {
    * @param visited The list of visited vertices.
    */
   private void recursiveBfsHelper(Queue<T> queue, List<T> visited) {
+    // only proceed if queue has elements
     if (queue.isEmpty()) {
       return;
     }
 
     T current = queue.dqueue();
 
-    List<T> neighbors = new ArrayList<>(setOfDestinations(current));
-    neighbors.sort(
+    List<T> neighbours = new ArrayList<>(setOfDestinations(current));
+    // implement comparator
+    neighbours.sort(
         new Comparator<T>() {
           @Override
           public int compare(T node1, T node2) {
@@ -393,10 +400,11 @@ public class Graph<T extends Comparable<T>> {
           }
         });
 
-    for (T neighbor : neighbors) {
-      if (!visited.contains(neighbor)) {
-        queue.enqueue(neighbor);
-        visited.add(neighbor);
+    // queue and visit neighbouring nodes
+    for (T neighbour : neighbours) {
+      if (!visited.contains(neighbour)) {
+        queue.enqueue(neighbour);
+        visited.add(neighbour);
       }
     }
 
@@ -409,6 +417,7 @@ public class Graph<T extends Comparable<T>> {
    * @return The list of visited vertices in the order they were visited.
    */
   public List<T> recursiveDepthFirstSearch() {
+    // initialise collections
     Stack<T> stack = new DlinkedListStack<>();
     List<T> totalVisited = new ArrayList<>();
 
@@ -430,6 +439,7 @@ public class Graph<T extends Comparable<T>> {
   private void recursiveDfsHelper(T node, Stack<T> stack, List<T> totalVisited) {
     stack.push(node);
 
+    // continue until stack is empty
     while (!stack.isEmpty()) {
       T current = stack.pop();
       if (!totalVisited.contains(current)) {
