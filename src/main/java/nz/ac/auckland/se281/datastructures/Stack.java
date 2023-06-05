@@ -2,7 +2,7 @@ package nz.ac.auckland.se281.datastructures;
 
 public interface Stack<T> {
 
-  int size();
+  public int size();
 
   public boolean isEmpty();
 

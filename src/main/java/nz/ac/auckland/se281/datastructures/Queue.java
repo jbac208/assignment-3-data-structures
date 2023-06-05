@@ -6,9 +6,9 @@ public interface Queue<T> {
 
   public boolean isEmpty();
 
-  public T front() throws InvalidPositionException;
+  public T front();
 
-  public void enqueue(T element) throws InvalidPositionException;
+  public void enqueue(T element);
 
-  public T dqueue() throws InvalidPositionException;
+  public T dqueue();
 }
