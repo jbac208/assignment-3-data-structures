@@ -5,13 +5,13 @@ package nz.ac.auckland.se281.datastructures;
  *
  * @param <T> The type of elements stored in the queue.
  */
-public class DLinkedListQueue<T> implements Queue<T> {
+public class DlinkedListQueue<T> implements Queue<T> {
 
-  protected DLinkedList<T> queueData;
+  protected DlinkedList<T> queueData;
 
   /** Constructs an empty DLinkedListQueue. */
-  public DLinkedListQueue() {
-    this.queueData = new DLinkedList<>();
+  public DlinkedListQueue() {
+    this.queueData = new DlinkedList<>();
   }
 
   /**

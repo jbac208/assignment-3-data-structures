@@ -5,13 +5,13 @@ package nz.ac.auckland.se281.datastructures;
  *
  * @param <T> The type of elements in the stack.
  */
-public class DLinkedListStack<T> implements Stack<T> {
+public class DlinkedListStack<T> implements Stack<T> {
 
-  protected DLinkedList<T> stackData;
+  protected DlinkedList<T> stackData;
 
   /** Constructs empty stack. */
-  public DLinkedListStack() {
-    this.stackData = new DLinkedList<>();
+  public DlinkedListStack() {
+    this.stackData = new DlinkedList<>();
   }
 
   /**

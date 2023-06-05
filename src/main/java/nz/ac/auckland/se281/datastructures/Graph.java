@@ -161,8 +161,9 @@ public class Graph<T extends Comparable<T>> {
     // check isAntiSymmetric
     for (Edge<T> edge : edges) {
       Edge<T> reverseEdge = new Edge<>(edge.getDestination(), edge.getSource());
-      if (edges.contains(reverseEdge) && !edge.getSource().equals(edge.getDestination()))
+      if (edges.contains(reverseEdge) && !edge.getSource().equals(edge.getDestination())) {
         return false;
+      }
     }
     return true;
   }
@@ -263,7 +264,7 @@ public class Graph<T extends Comparable<T>> {
    * @return The list of visited vertices in the order they were visited.
    */
   public List<T> iterativeBreadthFirstSearch() {
-    DLinkedListQueue<T> queue = new DLinkedListQueue<>();
+    DlinkedListQueue<T> queue = new DlinkedListQueue<>();
     List<T> visited = new ArrayList<>();
 
     // Start at root and search from every root
@@ -303,7 +304,7 @@ public class Graph<T extends Comparable<T>> {
    * @return The list of visited vertices in the order they were visited.
    */
   public List<T> iterativeDepthFirstSearch() {
-    Stack<T> stack = new DLinkedListStack<>();
+    Stack<T> stack = new DlinkedListStack<>();
     List<T> totalVisited = new ArrayList<>();
 
     // start at root and search at every root
@@ -353,7 +354,7 @@ public class Graph<T extends Comparable<T>> {
    * @return The list of visited vertices in the order they were visited.
    */
   public List<T> recursiveBreadthFirstSearch() {
-    Queue<T> queue = new DLinkedListQueue<>();
+    Queue<T> queue = new DlinkedListQueue<>();
     List<T> visited = new ArrayList<>();
 
     Set<T> rootSet = getRoots();
@@ -408,7 +409,7 @@ public class Graph<T extends Comparable<T>> {
    * @return The list of visited vertices in the order they were visited.
    */
   public List<T> recursiveDepthFirstSearch() {
-    Stack<T> stack = new DLinkedListStack<>();
+    Stack<T> stack = new DlinkedListStack<>();
     List<T> totalVisited = new ArrayList<>();
 
     Set<T> rootSet = getRoots();

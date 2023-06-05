@@ -5,46 +5,46 @@ package nz.ac.auckland.se281.datastructures;
  *
  * @param <T> The type of data stored in the node.
  */
-public class DNode<T> {
+public class Dnode<T> {
 
   private T data;
-  private DNode<T> prev;
-  private DNode<T> next;
+  private Dnode<T> prev;
+  private Dnode<T> next;
 
-  /** Constructs an empty DNode. */
-  public DNode() {}
+  /** Constructs an empty Dnode. */
+  public Dnode() {}
 
   /**
-   * Constructs a DNode with the specified data.
+   * Constructs a Dnode with the specified data.
    *
    * @param data The data to be stored in the node.
    */
-  public DNode(T data) {
+  public Dnode(T data) {
     this.data = data;
     prev = null;
     next = null;
   }
 
   /**
-   * Constructs a DNode with the specified data and previous node.
+   * Constructs a Dnode with the specified data and previous node.
    *
    * @param data The data to be stored in the node.
    * @param prev The previous node.
    */
-  public DNode(T data, DNode<T> prev) {
+  public Dnode(T data, Dnode<T> prev) {
     this.data = data;
     this.prev = prev;
     next = null;
   }
 
   /**
-   * Constructs a DNode with the specified data, previous node, and next node.
+   * Constructs a Dnode with the specified data, previous node, and next node.
    *
    * @param data The data to be stored in the node.
    * @param prev The previous node.
    * @param next The next node.
    */
-  public DNode(T data, DNode<T> prev, DNode<T> next) {
+  public Dnode(T data, Dnode<T> prev, Dnode<T> next) {
     this.data = data;
     this.prev = prev;
     this.next = next;
@@ -57,7 +57,7 @@ public class DNode<T> {
    *
    * @param prev The previous node.
    */
-  public void setPrev(DNode<T> prev) {
+  public void setPrev(Dnode<T> prev) {
     this.prev = prev;
   }
 
@@ -66,7 +66,7 @@ public class DNode<T> {
    *
    * @param next The next node.
    */
-  public void setNext(DNode<T> next) {
+  public void setNext(Dnode<T> next) {
     this.next = next;
   }
 
@@ -77,7 +77,7 @@ public class DNode<T> {
    *
    * @return The previous node.
    */
-  public DNode<T> getPrev() {
+  public Dnode<T> getPrev() {
     return prev;
   }
 
@@ -86,7 +86,7 @@ public class DNode<T> {
    *
    * @return The next node.
    */
-  public DNode<T> getNext() {
+  public Dnode<T> getNext() {
     return next;
   }
 

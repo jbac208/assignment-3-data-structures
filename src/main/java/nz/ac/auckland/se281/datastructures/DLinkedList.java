@@ -5,13 +5,13 @@ package nz.ac.auckland.se281.datastructures;
  *
  * @param <T> The type of elements in the linked list.
  */
-public class DLinkedList<T> {
+public class DlinkedList<T> {
 
-  private DNode<T> head;
-  private DNode<T> tail;
+  private Dnode<T> head;
+  private Dnode<T> tail;
 
   /** Constructs empty doubly linked list. */
-  public DLinkedList() {
+  public DlinkedList() {
     head = null;
     tail = null;
   }
@@ -23,7 +23,7 @@ public class DLinkedList<T> {
    */
   public void insertAtHead(T data) {
     // push
-    DNode<T> nodeToBeInserted = new DNode<>(data);
+    Dnode<T> nodeToBeInserted = new Dnode<>(data);
     if (head == null) {
       tail = nodeToBeInserted;
     } else {
@@ -39,7 +39,7 @@ public class DLinkedList<T> {
    * @param data The data to be inserted.
    */
   public void insertAtTail(T data) {
-    DNode<T> nodeToBeInserted = new DNode<>(data);
+    Dnode<T> nodeToBeInserted = new Dnode<>(data);
     if (tail == null) { // List is empty
       head = nodeToBeInserted;
       tail = nodeToBeInserted;
@@ -53,7 +53,7 @@ public class DLinkedList<T> {
   /** Deletes the node at head of linked list. */
   public void deleteHead() {
     if (head != null) {
-      DNode<T> temp = head;
+      Dnode<T> temp = head;
       head = temp.getNext();
       if (head != null) {
         head.setPrev(null);
@@ -66,7 +66,7 @@ public class DLinkedList<T> {
   /** Deletes the node at tail of linked list. */
   public void deleteTail() {
     if (tail != null) {
-      DNode<T> temp = tail;
+      Dnode<T> temp = tail;
       tail = temp.getPrev();
       if (tail != null) {
         tail.setNext(null);
@@ -85,7 +85,7 @@ public class DLinkedList<T> {
    */
   public int size() {
     int count = 0;
-    DNode<T> current = head;
+    Dnode<T> current = head;
     while (current != null) {
       ++count;
       current = current.getNext();
@@ -98,7 +98,7 @@ public class DLinkedList<T> {
    *
    * @return Head node.
    */
-  public DNode<T> getHead() {
+  public Dnode<T> getHead() {
     // peek
     return head;
   }
@@ -108,7 +108,7 @@ public class DLinkedList<T> {
    *
    * @return Tail node.
    */
-  public DNode<T> getTail() {
+  public Dnode<T> getTail() {
     return tail;
   }
 }
