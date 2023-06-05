@@ -39,7 +39,7 @@ public class Graph<T extends Comparable<T>> {
    */
   public Set<T> getRoots() {
     List<T> rootsList = new ArrayList<>();
-    Set<T> tRoots = new HashSet<>();
+    Set<T> rootsSet = new HashSet<>();
 
     // Check for roots with in-degree 0 and out-degree > 0
     for (T vertex : vertices) {
@@ -56,7 +56,7 @@ public class Graph<T extends Comparable<T>> {
       }
 
       if (!hasIncomingEdges && hasOutgoingEdges) {
-        tRoots.add(vertex);
+        rootsSet.add(vertex);
         rootsList.add(vertex);
       }
     }
@@ -65,14 +65,14 @@ public class Graph<T extends Comparable<T>> {
     Set<T> equivVertices = new HashSet<>();
     for (T vertex : vertices) {
       if (getEquivalenceClass(vertex).size() > 0 && !equivVertices.contains(vertex)) {
-        tRoots.add(vertex);
+        rootsSet.add(vertex);
         rootsList.add(vertex);
         equivVertices = getEquivalenceClass(vertex);
       }
     }
 
     // return sorted set
-    return orderHashSet(tRoots);
+    return orderHashSet(rootsSet);
   }
 
   /**
@@ -362,7 +362,7 @@ public class Graph<T extends Comparable<T>> {
       if (!visited.contains(root)) {
         queue.enqueue(root);
         visited.add(root);
-        recursiveBFSHelper(queue, visited);
+        recursiveBfsHelper(queue, visited);
       }
     }
 
@@ -375,7 +375,7 @@ public class Graph<T extends Comparable<T>> {
    * @param queue The queue used for traversal.
    * @param visited The list of visited vertices.
    */
-  private void recursiveBFSHelper(Queue<T> queue, List<T> visited) {
+  private void recursiveBfsHelper(Queue<T> queue, List<T> visited) {
     if (queue.isEmpty()) {
       return;
     }
@@ -400,7 +400,7 @@ public class Graph<T extends Comparable<T>> {
       }
     }
 
-    recursiveBFSHelper(queue, visited);
+    recursiveBfsHelper(queue, visited);
   }
 
   /**
@@ -414,7 +414,7 @@ public class Graph<T extends Comparable<T>> {
 
     Set<T> rootSet = getRoots();
     for (T root : rootSet) {
-      recursiveDFSHelper(root, stack, totalVisited);
+      recursiveDfsHelper(root, stack, totalVisited);
     }
 
     return totalVisited;
@@ -427,7 +427,7 @@ public class Graph<T extends Comparable<T>> {
    * @param stack The stack used for traversal.
    * @param totalVisited The list of visited vertices.
    */
-  private void recursiveDFSHelper(T node, Stack<T> stack, List<T> totalVisited) {
+  private void recursiveDfsHelper(T node, Stack<T> stack, List<T> totalVisited) {
     stack.push(node);
 
     while (!stack.isEmpty()) {
