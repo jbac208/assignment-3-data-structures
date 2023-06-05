@@ -15,19 +15,42 @@ public class Edge<T extends Comparable<T>> {
   private T source;
   private T destination;
 
+  /**
+   * Constructs an edge with the given source and destination vertices.
+   *
+   * @param source The source vertex.
+   * @param destination The destination vertex.
+   */
   public Edge(T source, T destination) {
     this.source = source;
     this.destination = destination;
   }
 
+  /**
+   * Returns source vertex of this edge.
+   *
+   * @return The source vertex.
+   */
   public T getSource() {
     return source;
   }
 
+  /**
+   * Returns destination vertex of this edge.
+   *
+   * @return The destination vertex.
+   */
   public T getDestination() {
     return destination;
   }
 
+  /**
+   * Compares this edge to the specified object for equality. Two edges are considered equal if
+   * their source and destination vertices are equal.
+   *
+   * @param obj The object to compare.
+   * @return return true if the edges are equal, false otherwise.
+   */
   @Override
   public boolean equals(Object obj) {
     if (!(obj instanceof Edge)) {
@@ -46,6 +69,11 @@ public class Edge<T extends Comparable<T>> {
     }
   }
 
+  /**
+   * Returns the hash code value for this edge.
+   *
+   * @return The hash code of the edge.
+   */
   @Override
   public int hashCode() {
     return Objects.hash(source);

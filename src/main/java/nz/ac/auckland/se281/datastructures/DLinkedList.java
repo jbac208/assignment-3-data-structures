@@ -1,15 +1,26 @@
 package nz.ac.auckland.se281.datastructures;
 
+/**
+ * Custom Doubly linked list data structure implementation.
+ *
+ * @param <T> The type of elements in the linked list.
+ */
 public class DLinkedList<T> {
 
   private DNode<T> head;
   private DNode<T> tail;
 
+  /** Constructs empty doubly linked list. */
   public DLinkedList() {
     head = null;
     tail = null;
   }
 
+  /**
+   * Inserts a new node with the specified data at head of linked list.
+   *
+   * @param data The data to be inserted.
+   */
   public void insertAtHead(T data) {
     // push
     DNode<T> nodeToBeInserted = new DNode<>(data);
@@ -22,6 +33,11 @@ public class DLinkedList<T> {
     head = nodeToBeInserted;
   }
 
+  /**
+   * Inserts a new node with the specified data at tail of linked list.
+   *
+   * @param data The data to be inserted.
+   */
   public void insertAtTail(T data) {
     DNode<T> nodeToBeInserted = new DNode<>(data);
     if (tail == null) { // List is empty
@@ -34,18 +50,7 @@ public class DLinkedList<T> {
     }
   }
 
-  public void insertAt(int position, T data) {
-    DNode<T> nodeToBeInserted = new DNode<>(data);
-    DNode<T> temp = head;
-    for (int i = 0; i < position; i++) {
-      temp = temp.getNext();
-    }
-    nodeToBeInserted.setPrev(temp);
-    nodeToBeInserted.setNext(temp.getNext());
-    temp.setNext(nodeToBeInserted);
-    nodeToBeInserted.getNext().setPrev(nodeToBeInserted);
-  }
-
+  /** Deletes the node at head of linked list. */
   public void deleteHead() {
     if (head != null) {
       DNode<T> temp = head;
@@ -58,6 +63,7 @@ public class DLinkedList<T> {
     }
   }
 
+  /** Deletes the node at tail of linked list. */
   public void deleteTail() {
     if (tail != null) {
       DNode<T> temp = tail;
@@ -70,17 +76,13 @@ public class DLinkedList<T> {
     }
   }
 
-  public void deleteAt(int position) {
-    DNode<T> temp = head;
-    for (int i = 0; i < position; i++) {
-      temp = temp.getNext();
-    }
-    temp.getPrev().setNext(temp.getNext());
-    temp.getNext().setPrev(temp.getPrev());
-  }
-
   // returning/getter methods
 
+  /**
+   * Returns number of elements in linked list.
+   *
+   * @return The size of the linked list.
+   */
   public int size() {
     int count = 0;
     DNode<T> current = head;
@@ -91,11 +93,21 @@ public class DLinkedList<T> {
     return count;
   }
 
+  /**
+   * Returns the head node of linked list.
+   *
+   * @return Head node.
+   */
   public DNode<T> getHead() {
     // peek
     return head;
   }
 
+  /**
+   * Returns the tail node of linked list.
+   *
+   * @return Tail node.
+   */
   public DNode<T> getTail() {
     return tail;
   }

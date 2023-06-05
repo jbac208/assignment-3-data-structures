@@ -20,11 +20,23 @@ public class Graph<T extends Comparable<T>> {
   private Set<T> vertices;
   private Set<Edge<T>> edges;
 
+  /**
+   * Constructs a graph with the given vertices and edges.
+   *
+   * @param vertices The set of vertices in the graph.
+   * @param edges The set of edges in the graph.
+   */
   public Graph(Set<T> verticies, Set<Edge<T>> edges) {
     this.vertices = verticies;
     this.edges = edges;
   }
 
+  /**
+   * Returns the roots of this graph, i.e., the vertices with in-degree 0 and out-degree > 0. The
+   * roots are returned in ascending order based on their numeric value.
+   *
+   * @return The set of roots in the graph.
+   */
   public Set<T> getRoots() {
     List<T> rootsList = new ArrayList<>();
     Set<T> tRoots = new HashSet<>();
@@ -59,10 +71,16 @@ public class Graph<T extends Comparable<T>> {
       }
     }
 
-    // Sort nRoots in ascending order
+    // return sorted set
     return orderHashSet(tRoots);
   }
 
+  /**
+   * Orders a set of elements in ascending order based on their numeric value.
+   *
+   * @param set The set to be ordered.
+   * @return The ordered set.
+   */
   public Set<T> orderHashSet(Set<T> set) {
     // Create a custom comparator to compare string-wrapped numbers as numbers
     Comparator<T> comparator =
@@ -79,6 +97,11 @@ public class Graph<T extends Comparable<T>> {
     return orderedSet;
   }
 
+  /**
+   * Checks if this graph is reflexive.
+   *
+   * @return true if the graph is reflexive, false otherwise.
+   */
   public boolean isReflexive() {
     for (T vertex : vertices) {
       // define the reflexive edge for that vertex
@@ -91,6 +114,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * Checks if this graph is symmetric.
+   *
+   * @return true if the graph is symmetric, false otherwise.
+   */
   public boolean isSymmetric() {
     // symmetric -> all edges are bidirectional
     for (Edge<T> edge : edges) {
@@ -104,13 +132,13 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * Checks if this graph is transitive.
+   *
+   * @return true if the graph is transitive, false otherwise.
+   */
   public boolean isTransitive() {
-    // check transitivity
-    return isSetTransitive(edges);
-  }
-
-  private boolean isSetTransitive(Set<Edge<T>> edges) {
-    // check transitivity
+    // check transivity
     for (Edge<T> edge1 : edges) {
       for (Edge<T> edge2 : edges) {
         if (edge1.getDestination().equals(edge2.getSource())) {
@@ -124,6 +152,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * Checks if this graph is anti-symmetric.
+   *
+   * @return true if the graph is anti-symmetric, false otherwise.
+   */
   public boolean isAntiSymmetric() {
     // check isAntiSymmetric
     for (Edge<T> edge : edges) {
@@ -134,11 +167,22 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * Checks if this graph is an equivalence relation.
+   *
+   * @return true if the graph is an equivalence relation, false otherwise.
+   */
   public boolean isEquivalence() {
     // equivalence check
     return isReflexive() && isSymmetric() && isTransitive();
   }
 
+  /**
+   * Retrieves the equivalence class of a given vertex.
+   *
+   * @param vertex The vertex for which to retrieve the equivalence class.
+   * @return The set of vertices in the equivalence class.
+   */
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> equivalenceClassSet = new HashSet<>();
     T nextV = null;
@@ -163,6 +207,12 @@ public class Graph<T extends Comparable<T>> {
     return equivalenceClassSet;
   }
 
+  /**
+   * Retrieves the set of destination nodes for a given node.
+   *
+   * @param node The node for which to retrieve the destinations.
+   * @return The set of destination nodes.
+   */
   private Set<T> setOfDestinations(T node) {
     Set<T> destinationNodes = new HashSet<>();
     for (Edge<T> edge : edges) {
@@ -176,6 +226,12 @@ public class Graph<T extends Comparable<T>> {
     return destinationNodes;
   }
 
+  /**
+   * Sorts a list of elements in ascending order based on their numeric value.
+   *
+   * @param list The list to be sorted.
+   * @return The sorted list.
+   */
   private List<T> bubbleSort(List<T> list) {
     int n = list.size();
     boolean swapped;
@@ -201,6 +257,11 @@ public class Graph<T extends Comparable<T>> {
     return list;
   }
 
+  /**
+   * Performs an iterative BFS on this graph.
+   *
+   * @return The list of visited vertices in the order they were visited.
+   */
   public List<T> iterativeBreadthFirstSearch() {
     DLinkedListQueue<T> queue = new DLinkedListQueue<>();
     List<T> visited = new ArrayList<>();
@@ -236,6 +297,11 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
+  /**
+   * Performs an iterative DFS on this graph.
+   *
+   * @return The list of visited vertices in the order they were visited.
+   */
   public List<T> iterativeDepthFirstSearch() {
     Stack<T> stack = new DLinkedListStack<>();
     List<T> totalVisited = new ArrayList<>();
@@ -281,6 +347,11 @@ public class Graph<T extends Comparable<T>> {
     return totalVisited;
   }
 
+  /**
+   * Performs a recursive BFS on this graph.
+   *
+   * @return The list of visited vertices in the order they were visited.
+   */
   public List<T> recursiveBreadthFirstSearch() {
     Queue<T> queue = new DLinkedListQueue<>();
     List<T> visited = new ArrayList<>();
@@ -297,6 +368,12 @@ public class Graph<T extends Comparable<T>> {
     return visited;
   }
 
+  /**
+   * Recursive helper method for recursiveBreadthFirstSearch().
+   *
+   * @param queue The queue used for traversal.
+   * @param visited The list of visited vertices.
+   */
   private void recursiveBFSHelper(Queue<T> queue, List<T> visited) {
     if (queue.isEmpty()) {
       return;
@@ -325,6 +402,11 @@ public class Graph<T extends Comparable<T>> {
     recursiveBFSHelper(queue, visited);
   }
 
+  /**
+   * Performs a recursive DFS on this graph.
+   *
+   * @return The list of visited vertices in the order they were visited.
+   */
   public List<T> recursiveDepthFirstSearch() {
     Stack<T> stack = new DLinkedListStack<>();
     List<T> totalVisited = new ArrayList<>();
@@ -337,6 +419,13 @@ public class Graph<T extends Comparable<T>> {
     return totalVisited;
   }
 
+  /**
+   * Recursive helper method for recursiveDepthFirstSearch().
+   *
+   * @param node The current node being visited.
+   * @param stack The stack used for traversal.
+   * @param totalVisited The list of visited vertices.
+   */
   private void recursiveDFSHelper(T node, Stack<T> stack, List<T> totalVisited) {
     stack.push(node);
 
