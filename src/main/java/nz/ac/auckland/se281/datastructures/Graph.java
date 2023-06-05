@@ -172,21 +172,21 @@ public class Graph<T extends Comparable<T>> {
     return convertedList;
   }
 
-  private Set<T> setOfAdjacentNodes(T node) {
-    Set<T> adjacentNodes = new HashSet<>();
-    for (Edge<T> edge : edges) {
-      T nextNode = edge.getDestination();
-      T prevNode = edge.getSource();
-      if (prevNode.equals(node) && !nextNode.equals(node) && nextNode != null) {
-        // next node exists and is not self
-        adjacentNodes.add(nextNode);
-      } else if (nextNode.equals(node) && !prevNode.equals(node) && prevNode != null) {
-        // prev node exists and is not self
-        adjacentNodes.add(prevNode);
-      }
-    }
-    return adjacentNodes;
-  }
+  // private Set<T> setOfAdjacentNodes(T node) {
+  //   Set<T> adjacentNodes = new HashSet<>();
+  //   for (Edge<T> edge : edges) {
+  //     T nextNode = edge.getDestination();
+  //     T prevNode = edge.getSource();
+  //     if (prevNode.equals(node) && !nextNode.equals(node) && nextNode != null) {
+  //       // next node exists and is not self
+  //       adjacentNodes.add(nextNode);
+  //     } else if (nextNode.equals(node) && !prevNode.equals(node) && prevNode != null) {
+  //       // prev node exists and is not self
+  //       adjacentNodes.add(prevNode);
+  //     }
+  //   }
+  //   return adjacentNodes;
+  // }
 
   private Set<T> setOfDestinations(T node) {
     Set<T> destinationNodes = new HashSet<>();
@@ -227,8 +227,45 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> iterativeBreadthFirstSearch() {
-    // TODO: Task 2.
-    throw new UnsupportedOperationException();
+    Queue<T> queue = new DLinkedListQueue<>();
+    List<T> totalVisited = new ArrayList<>();
+
+    // start at root and search at every root
+    Set<T> rootSet = getRoots();
+    for (T root : rootSet) {
+      queue.enqueue(root);
+
+      // traverse
+      List<T> visited = new ArrayList<>();
+      while (!queue.isEmpty()) {
+        T current = queue.front();
+        // if unknown node, visit it
+        if (!visited.contains(current)) {
+          visited.add(current);
+
+          // get neighbors
+          List<T> destinations = new ArrayList<>();
+          while (destinations.size() <= 0) {
+            for (T destination : setOfDestinations(current)) {
+              if (!visited.contains(destination)) {
+                destinations.add(destination);
+              }
+            }
+            if (destinations.size() <= 0) {
+              // go back until there is a neighbour
+              queue.dqueue();
+              // break if stack empty
+              if (queue.isEmpty()) {
+                break;
+              }
+              current = queue.front();
+            }
+          }
+        }
+      }
+      totalVisited.addAll(visited);
+    }
+    return totalVisited;
   }
 
   public List<T> iterativeDepthFirstSearch() {
@@ -271,7 +308,6 @@ public class Graph<T extends Comparable<T>> {
           }
         }
       }
-      // convert visited Set to ordered List
       totalVisited.addAll(visited);
     }
     return totalVisited;
