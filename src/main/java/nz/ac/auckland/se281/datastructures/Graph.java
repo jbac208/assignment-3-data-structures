@@ -188,7 +188,20 @@ public class Graph<T extends Comparable<T>> {
     return adjacentNodes;
   }
 
-  public void bubbleSort(List<T> list) {
+  private Set<T> setOfDestinations(T node) {
+    Set<T> destinationNodes = new HashSet<>();
+    for (Edge<T> edge : edges) {
+      T nextNode = edge.getDestination();
+      T prevNode = edge.getSource();
+      if (prevNode.equals(node) && !nextNode.equals(node) && nextNode != null) {
+        // next node exists and is not self
+        destinationNodes.add(nextNode);
+      }
+    }
+    return destinationNodes;
+  }
+
+  public List<T> bubbleSort(List<T> list) {
     int n = list.size();
     boolean swapped;
 
@@ -196,7 +209,7 @@ public class Graph<T extends Comparable<T>> {
       swapped = false;
 
       for (int j = 0; j < n - i - 1; j++) {
-        if (list.get(j).compareTo(list.get(j + 1)) > 0) {
+        if (((Comparable) list.get(j)).compareTo(Integer.parseInt((String) list.get(j + 1))) > 0) {
           // Swap elements
           T temp = list.get(j);
           list.set(j, list.get(j + 1));
@@ -210,6 +223,7 @@ public class Graph<T extends Comparable<T>> {
         break;
       }
     }
+    return list;
   }
 
   public List<T> iterativeBreadthFirstSearch() {
@@ -227,24 +241,33 @@ public class Graph<T extends Comparable<T>> {
       stack.push(root);
 
       // traverse
-      Set<T> visited = new HashSet<>();
+      List<T> visited = new ArrayList<>();
       while (!stack.isEmpty()) {
-        T current = stack.pop();
+        T current = stack.peek();
         // if unknown node, visit it
         if (!visited.contains(current)) {
           visited.add(current);
 
-          // add adjacent (neighbour) nodes to stack
-          for (T neighbour : setOfAdjacentNodes(current)) {
-            stack.push(neighbour);
+          // check
+          List<T> destinations = new ArrayList<>();
+          while (destinations.size() <= 0) {
+            for (T destination : setOfDestinations(current)) {
+              destinations.add(destination);
+            }
+            if (destinations.size() <= 0) {
+              // go back until there is a neighbour
+              stack.pop();
+              current = stack.peek();
+            }
           }
+          stack.push(bubbleSort(destinations).get(0));
         }
       }
       // convert visited Set to ordered List
       visitConverted.addAll(visited);
     }
 
-    //bubbleSort(visitConverted);
+    // bubbleSort(visitConverted);
 
     return visitConverted;
   }
