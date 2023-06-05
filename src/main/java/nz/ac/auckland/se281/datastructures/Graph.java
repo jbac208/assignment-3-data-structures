@@ -209,7 +209,7 @@ public class Graph<T extends Comparable<T>> {
       swapped = false;
 
       for (int j = 0; j < n - i - 1; j++) {
-        if (((Comparable) list.get(j)).compareTo(Integer.parseInt((String) list.get(j + 1))) > 0) {
+        if (Integer.parseInt((String) list.get(j)) > Integer.parseInt((String) list.get(j + 1))) {
           // Swap elements
           T temp = list.get(j);
           list.set(j, list.get(j + 1));
@@ -233,7 +233,7 @@ public class Graph<T extends Comparable<T>> {
 
   public List<T> iterativeDepthFirstSearch() {
     Stack<T> stack = new DLinkedListStack<>();
-    List<T> visitConverted = new ArrayList<>();
+    List<T> totalVisited = new ArrayList<>();
 
     // start at root and search at every root
     Set<T> rootSet = getRoots();
@@ -252,24 +252,29 @@ public class Graph<T extends Comparable<T>> {
           List<T> destinations = new ArrayList<>();
           while (destinations.size() <= 0) {
             for (T destination : setOfDestinations(current)) {
-              destinations.add(destination);
+              if (!visited.contains(destination)) {
+                destinations.add(destination);
+              }
             }
             if (destinations.size() <= 0) {
               // go back until there is a neighbour
               stack.pop();
+              // break if stack empty
+              if (stack.isEmpty()) {
+                break;
+              }
               current = stack.peek();
             }
           }
-          stack.push(bubbleSort(destinations).get(0));
+          if (!destinations.isEmpty()) {
+            stack.push(bubbleSort(destinations).get(0));
+          }
         }
       }
       // convert visited Set to ordered List
-      visitConverted.addAll(visited);
+      totalVisited.addAll(visited);
     }
-
-    // bubbleSort(visitConverted);
-
-    return visitConverted;
+    return totalVisited;
   }
 
   public List<T> recursiveBreadthFirstSearch() {
