@@ -2,4 +2,5 @@
 # Assignment 3
 
 You will find instructions for this assignment on the course website.
+https://softeng281.digitaledu.ac.nz/assessments/assignment-3/
 
